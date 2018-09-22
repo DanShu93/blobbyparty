@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 58486921754052960}
   - component: {fileID: 114928064194491820}
   - component: {fileID: 95637065450388132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plunger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

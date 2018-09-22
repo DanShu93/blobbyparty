@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
         playerMap = new Dictionary<string, PlungerInputMobile>();
         firePrefab = Resources.Load("Plunger") as GameObject;
         icePrefab = Resources.Load("Plunger") as GameObject;
-        StartCoroutine(CountdownRoutine());
+        setRunning(true);
     }
 
     // FIXME spwan in propper positions
