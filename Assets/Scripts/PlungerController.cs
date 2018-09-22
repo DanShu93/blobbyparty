@@ -12,7 +12,6 @@ public class PlungerController : MonoBehaviour
     [SerializeField]
     float horizontalDrag = 0.05f;
 
-
     [Header("Gravity")]
     [SerializeField]
     float minGravity = 1f;
@@ -24,15 +23,22 @@ public class PlungerController : MonoBehaviour
     [SerializeField]
     float jumpForce = 10f;
 
-    
+    [Header("Flip")]
+    [SerializeField]
+    float flipTime = 1f;
+    [SerializeField]
+    AnimationCurve flipSmoother;
 
     bool jumpPressed;
+    bool flipPressed;
 
     bool grounded;
     bool gravityDecreased;
+    bool turning;
+    bool flipping;
 
+    WaitForEndOfFrame wait = new WaitForEndOfFrame();
     Rigidbody2D rb;
-
 
     private void Awake()
     {
@@ -43,7 +49,7 @@ public class PlungerController : MonoBehaviour
     {
         if (!grounded)
         {
-            if((!jumpPressed || rb.velocity.y < 0f) && gravityDecreased)
+            if ((!jumpPressed || rb.velocity.y < 0f) && gravityDecreased)
             {
                 ResetGravity();
             }
@@ -63,8 +69,48 @@ public class PlungerController : MonoBehaviour
                 Jump();
             }
         }
+
+        if(flipPressed && !flipping)
+        {
+            //Direction (= bool) depends on where the player is in relation to the ball
+            StartCoroutine(Flip(true));
+        }
     }
 
+    IEnumerator Flip(bool clockWise)
+    {
+        flipping = true;
+
+        float timer = 0f;
+        float percentage = 0f;
+
+        float start = transform.eulerAngles.z;
+
+        float target = start;
+        if (clockWise)
+        {
+            target -= 180f;
+        }
+        else
+        {
+            target += 180f;
+        }
+
+        while (percentage < 1f)
+        {
+            timer += Time.deltaTime;
+            percentage = timer / flipTime;
+            float smoothedPercentage = flipSmoother.Evaluate(percentage);
+
+            transform.eulerAngles = Vector3.forward * Mathf.Lerp(start, target, smoothedPercentage);
+
+            yield return wait;
+        }
+
+        transform.eulerAngles = Vector3.forward * target;
+
+        flipping = false;
+    }
 
     public void Jump()
     {
@@ -76,9 +122,10 @@ public class PlungerController : MonoBehaviour
     }
 
     //Check if Jump is pressed
-    public void SetJump(bool i)
+    public void SynchInput(bool jump, bool flip)
     {
-        jumpPressed = i;
+        jumpPressed = jump;
+        flipPressed = flip;
     }
 
     public void ResetGravity()
@@ -89,13 +136,12 @@ public class PlungerController : MonoBehaviour
 
     public void Move(float h)
     {
-        if((h > 0f && rb.velocity.x < maxSpeed) || (h < 0f && rb.velocity.x > -maxSpeed))
+        if ((h > 0f && rb.velocity.x < maxSpeed) || (h < 0f && rb.velocity.x > -maxSpeed))
         {
             rb.AddForce(Vector3.right * acceleration * Time.deltaTime * h);
         }
 
         rb.velocity = new Vector2(rb.velocity.x * (1 - horizontalDrag), rb.velocity.y);
-        //rb.AddForce(Vector3.right * -rb.velocity.x * Time.deltaTime * horizontalDrag);
     }
 
     //Check if grounded
