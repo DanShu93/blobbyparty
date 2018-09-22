@@ -59,11 +59,14 @@ public class EnvironmentController : MonoBehaviour {
 		this.FloorTransform.localScale = new Vector3(screenBounds.x, FloorTransform.localScale.y, 1);
 		BoxCollider2D leftBorder = transform.gameObject.AddComponent<BoxCollider2D>();
 		BoxCollider2D rightBorder = transform.gameObject.AddComponent<BoxCollider2D>();
+		BoxCollider2D topBorder = transform.gameObject.AddComponent<BoxCollider2D>();
 		leftBorder.size = new Vector2(1,100);
 		rightBorder.size = new Vector2(1,100);
+		topBorder.size = new Vector2(100,1);
 
 		leftBorder.offset = new Vector2(-(this.screenBounds.x / 2 + 0.5f), 0);
 		rightBorder.offset = new Vector2(this.screenBounds.x / 2 + 0.5f, 0);
+		topBorder.offset = new Vector2(0, this.screenBounds.y + 0.5f);
 
 		NetHeight = NetTransform.localScale.y;
 		SetNetHeight(NetHeight);
@@ -148,8 +151,8 @@ public class EnvironmentController : MonoBehaviour {
 	public void SetNetHeight(float height)
 	{
 		NetHeight = height;
-		this.NetTransform.localScale = new Vector3(NetTransform.localScale.x, height, NetTransform.localScale.z);
-		this.NetTransform.position = new Vector3(0, NetTransform.localScale.y / 2 + FloorTransform.position.y + (FloorTransform.localScale.y / 2), NetTransform.position.z);
+		NetTransform.localScale = new Vector3(NetTransform.localScale.x, height, NetTransform.localScale.z);
+		NetTransform.position = new Vector3(0, NetTransform.localScale.y / 2 + FloorTransform.position.y + (FloorTransform.localScale.y / 2), NetTransform.position.z);
 	}
 
 }

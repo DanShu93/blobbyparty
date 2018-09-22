@@ -30,6 +30,7 @@ public class PlungerInput : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
+            Debug.Log("Jump");
             jumpInput = true;
         }
         else
