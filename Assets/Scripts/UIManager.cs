@@ -28,9 +28,18 @@ public class UIManager : MonoBehaviour {
 	private int rightTeamScore = 0;
 
 	private bool splashVisible = false;
+
+    [SerializeField]
+    AudioClip intro;
+    [SerializeField]
+    AudioClip game;
+
+    AudioSource source;
+
 	// Use this for initialization
 	void Start () 
 	{
+        source = GetComponent<AudioSource>();
 		timerText.enabled = false;
 		timerEnabled = false;
 
@@ -125,5 +134,15 @@ public class UIManager : MonoBehaviour {
 	{
 		splashVisible = b;
 		this.SplashScreen.gameObject.SetActive(b);//.SetActive(b);
-	}
+
+        if(b == false)
+        {
+            source.clip = game;
+        }
+        else
+        {
+            source.clip = intro;
+
+        }
+    }
 }
