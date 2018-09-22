@@ -22,12 +22,10 @@
 </div>
 
 
-<div style="user-select: none;font-size:800%;text-align:center;position: absolute; background-color: black; color:white; height: 40%;width: 50%;display: inline-block"
-     onmousedown="flip=true;" onmouseup="flip=false;">Flip
-</div>
-<div style="user-select: none;font-size:800%;text-align:center;background-color: black;color:white;height: 40%;width: 50%;display: inline-block"
-     onmousedown="jump=true;" onmouseup="jump=false;">Jump
-</div>
+<img style="user-select: none;font-size:800%;text-align:center;position: absolute; background-color: black; color:white; height: 40%;width: 50%;display: inline-block"
+     onmousedown="flip=true;" onmouseup="flip=false;" ontouchstart="flip=true;" ontouchend="flip=false;" alt="Flip" src="img/button.png">
+<img style="user-select: none;font-size:800%;text-align:center;background-color: black;color:white;height: 40%;width: 50%;display: inline-block"
+     onmousedown="jump=true;" onmouseup="jump=false;" ontouchstart="jump=true;" ontouchend="jump=false;" alt="Jump" src="img/button.png">
 
 <script type="text/javascript">
     $(document).ready(function () {
