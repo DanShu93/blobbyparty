@@ -4,6 +4,12 @@
     <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/backbone-min.js"></script>
     <script type="text/javascript" src="js/joystick_view.js"></script>
+    <script type="text/javascript">
+        var flip = false;
+        var jump = false;
+        var playerColor = Math.floor(Math.random() * 16777215).toString(16);
+        console.log(playerColor);
+    </script>
 </head>
 <body>
 
@@ -16,25 +22,18 @@
 <div id="joystickContent" style="display: inline-block">
 </div>
 
-<script type="text/javascript">
-    var flip = false;
-    var jump = false;
-</script>
 
-<div style="user-select: none;font-size:800%;text-align:center;position: absolute; background-color: green;height: 40%;width: 50%;display: inline-block"
+<div style="user-select: none;font-size:800%;text-align:center;position: absolute; background-color: black; color:white; height: 40%;width: 50%;display: inline-block"
      onmousedown="flip=true;" onmouseup="flip=false;">Flip
 </div>
-<div style="user-select: none;font-size:800%;text-align:center;background-color: red;height: 40%;width: 50%;display: inline-block"
+<div style="user-select: none;font-size:800%;text-align:center;background-color: black;color:white;height: 40%;width: 50%;display: inline-block"
      onmousedown="jump=true;" onmouseup="jump=false;">Jump
-</div>
-
-<div>
-    x: <span id="xVal"></span><br/>
-    y: <span id="yVal"></span><br/>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        document.body.style.backgroundColor = playerColor;
+
         var conn = new WebSocket("ws://" + window.location.hostname + ":8080");
         conn.onopen = function (evt) {
             console.log("connection opened");
