@@ -99,15 +99,18 @@ public class GameManager : MonoBehaviour
     {
         Transform player;
 
-        Vector2 position = createRandomPosition(-10, 10, -4, 4);
+        float xOffset = Random.Range(1f, 4f);
 
         if (numberOfIce > numberOfFire)
         {
+            Vector3 position = new Vector3(xOffset, -1, 0);
             player = Instantiate(firePrefab, position, Quaternion.identity).transform;
             numberOfFire++;
         }
         else
         {
+            Vector3 position = new Vector3(-xOffset, -1, 0);
+
             player = Instantiate(icePrefab, position, Quaternion.identity).transform;
             numberOfIce++;
         }
