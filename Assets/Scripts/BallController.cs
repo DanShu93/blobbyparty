@@ -5,7 +5,8 @@ using UnityEngine;
 public enum BallState 
 {
 	Floating,
-	Active
+	Active,
+	OnGround
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -15,11 +16,12 @@ public class BallController : MonoBehaviour {
 	public float Scale = 1f;
 	public float Speed = 1f;
 	private float radius;
-	private BallState state;
+	public BallState state;
 	private EnvironmentController environment;
+	private UIManager uIManager;
 	private Rigidbody2D rigid;
 
-	public void Start()
+	public void Awake()
 	{
 		// SET UP INITIAL SIZE OF BALL
 		transform.localScale = Vector3.one * Scale;
@@ -28,6 +30,7 @@ public class BallController : MonoBehaviour {
 		rigid = GetComponent<Rigidbody2D>();
 
 		environment = Transform.FindObjectOfType<EnvironmentController>();
+		uIManager = Transform.FindObjectOfType<UIManager>();
 	}
 
 	public void Update()
@@ -35,10 +38,10 @@ public class BallController : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.H)) 
 		{
-			HitBall( Random.Range(0f, 1f), new Vector2(Random.Range(-1f, 1f), 0));		
+			HitBall( Random.Range(0f, 1f) * 10, new Vector2(Random.Range(-1f, 1f), 1));		
 		}
 
-		if(environment.IsOnGround(transform.position, radius))
+		if(this.state == BallState.Active && environment.IsOnGround(transform.position, radius))
 		{
 			// TODO: ADD POINT FOR TEAM LATER
 
@@ -47,9 +50,12 @@ public class BallController : MonoBehaviour {
 				case 1:
 						// RIGHT TEAM WINS
 						Debug.Log("[Ball] Point for right Team.");
+
+						uIManager.IncrementScore(BlobbyTeam.Right);
 					break;
 				case -1:
 						Debug.Log("[Ball] Point for left Team.");
+						uIManager.IncrementScore(BlobbyTeam.Left);
 				 		// LEFT TEAM WINS
 					break;
 				default:
@@ -58,8 +64,16 @@ public class BallController : MonoBehaviour {
 					break;
 			
 			}
-			environment.RespawnBall();
+			state = BallState.OnGround;
+			StartCoroutine("TriggerRestart");
 		}
+	}
+
+	private IEnumerator ExecuteAfterTime(float time, System.Action action)
+	{
+		yield return new WaitForSeconds(time);
+
+		action();
 	}
 
 	public void HitBall(float force, Vector2 direction) 
@@ -69,8 +83,10 @@ public class BallController : MonoBehaviour {
 			Debug.Log("[Ball] Ball hit (force: " + force + ", direction: " + direction + ")");
 			rigid.bodyType = RigidbodyType2D.Dynamic;
 
-			rigid.velocity = force * direction;
+			SetState(BallState.Active);
 		}
+
+		rigid.velocity = force * direction;
 	}
 
 	public void SetState(BallState ballState)
@@ -80,6 +96,8 @@ public class BallController : MonoBehaviour {
 			rigid.bodyType = RigidbodyType2D.Kinematic;
 			rigid.velocity = Vector2.zero;
 		}
+
+		this.state = ballState;
 	}
 
 	public void SetPosition(Vector3 position)
@@ -87,7 +105,13 @@ public class BallController : MonoBehaviour {
 		transform.position = position;
 	}
 
+	public IEnumerator TriggerRestart()
+	{
+		Debug.Log("[Ball] Triggered Restart!");
 
-
+		float restartDelay = 5f;
+		uIManager.StartTimer(restartDelay);
+		yield return ExecuteAfterTime(restartDelay, environment.RespawnBall);
+	}
 
 }

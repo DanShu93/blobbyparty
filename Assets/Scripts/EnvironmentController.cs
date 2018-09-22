@@ -52,8 +52,21 @@ public class EnvironmentController : MonoBehaviour {
 		float height = Camera.main.orthographicSize * 2.0f;
  		float width = height * Screen.width / Screen.height;
 
-		 this.screenBounds = new Vector2(width, height);
+		this.screenBounds = new Vector2(width, height);
 
+		// Adjust Size of Background
+		this.BackgroundTransform.localScale = new Vector3(screenBounds.x, screenBounds.y, 0);
+		this.FloorTransform.localScale = new Vector3(screenBounds.x, FloorTransform.localScale.y, 1);
+		BoxCollider2D leftBorder = transform.gameObject.AddComponent<BoxCollider2D>();
+		BoxCollider2D rightBorder = transform.gameObject.AddComponent<BoxCollider2D>();
+		leftBorder.size = new Vector2(1,100);
+		rightBorder.size = new Vector2(1,100);
+
+		leftBorder.offset = new Vector2(-(this.screenBounds.x / 2 + 0.5f), 0);
+		rightBorder.offset = new Vector2(this.screenBounds.x / 2 + 0.5f, 0);
+
+		NetHeight = NetTransform.localScale.y;
+		SetNetHeight(NetHeight);
 		// DEBUGGING TESTS
 		RespawnBall();
 	}
@@ -64,11 +77,20 @@ public class EnvironmentController : MonoBehaviour {
 		{
 			RespawnBall();
 		}
+
+		if(Input.GetKey(KeyCode.U)) 
+		{
+			SetNetHeight(NetHeight + 0.01f);
+		}
+		if(Input.GetKey(KeyCode.Z)) 
+		{
+			SetNetHeight(NetHeight - 0.01f);
+		}
 	}
 
 	public bool IsOnGround(Vector2 ballPosition, float ballSize)
 	{
-		Debug.Log("Ball Height: " + ((ballPosition.y - ballSize) - floorLevel));
+		Debug.Log("Ball Height: " + ((ballPosition.y + ballSize) - floorLevel));
 		if((ballPosition.y - ballSize) - floorLevel <= 0 ) 
 		{
 			return true;
@@ -121,4 +143,13 @@ public class EnvironmentController : MonoBehaviour {
 		this.ball.SetState(BallState.Floating);
 		this.ball.SetPosition(GetBallSpawnPosition(SpawnMode.Random));
 	}
+
+
+	public void SetNetHeight(float height)
+	{
+		NetHeight = height;
+		this.NetTransform.localScale = new Vector3(NetTransform.localScale.x, height, NetTransform.localScale.z);
+		this.NetTransform.position = new Vector3(0, NetTransform.localScale.y / 2 + FloorTransform.position.y + (FloorTransform.localScale.y / 2), NetTransform.position.z);
+	}
+
 }
