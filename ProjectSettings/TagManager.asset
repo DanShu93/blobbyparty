@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Pooler
   - Ground
+  - Ball
   layers:
   - Default
   - TransparentFX

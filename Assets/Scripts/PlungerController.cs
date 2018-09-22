@@ -151,5 +151,13 @@ public class PlungerController : MonoBehaviour
         {
             grounded = true;
         }
+        else if(other.gameObject.CompareTag("Ball"))
+        {
+            BallController controller = other.gameObject.GetComponent<BallController>();
+
+            controller.HitBall(10f, (-1)*other.contacts[0].normal.normalized);
+
+            Debug.Log("Ball Hit");
+        }
     }
 }
