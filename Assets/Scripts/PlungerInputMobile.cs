@@ -20,7 +20,6 @@ public class PlungerInputMobile : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         pC.Move(directionInput.x);
 
-        pC.SynchInput(jumpInput, flipInput);
     }
 
    public void UpdateInput(Vector2 direction, bool flip, bool jump)
@@ -28,5 +27,6 @@ public class PlungerInputMobile : MonoBehaviour
        directionInput = direction;
        jumpInput = jump;
        flipInput = flip;
+        pC.SynchInput(jumpInput, flipInput);
    }
 }

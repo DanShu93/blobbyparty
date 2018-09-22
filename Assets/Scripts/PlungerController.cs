@@ -29,10 +29,10 @@ public class PlungerController : MonoBehaviour
     [SerializeField]
     AnimationCurve flipSmoother;
 
-    bool jumpPressed;
-    bool flipPressed;
+    public bool jumpPressed;
+    public bool flipPressed;
 
-    bool grounded;
+    public bool grounded;
     bool gravityDecreased;
     bool turning;
     bool flipping;
