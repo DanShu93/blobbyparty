@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   running: 0
-  timer: 30
+  timer: 5
   canvas: {fileID: 1636914544}
   timerText: {fileID: 303450506}
 --- !u!114 &1893600347
