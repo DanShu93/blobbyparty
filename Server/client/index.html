@@ -40,8 +40,8 @@
             function createPlayerID() {
                 function s4() {
                     return Math.floor((1 + Math.random()) * 0x10000)
-                            .toString(16)
-                            .substring(1);
+                        .toString(16)
+                        .substring(1);
                 }
 
                 return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
@@ -53,12 +53,15 @@
 
             conn.send(JSON.stringify({
                 "Type": "join",
-                "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor}
+                "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor, "Flip": flip, "Jump": jump}
             }));
 
             conn.onclose = function (evt) {
                 console.log("connection closed");
-                conn.send(JSON.stringify({"Type": "leave", "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor}}));
+                conn.send(JSON.stringify({
+                    "Type": "leave",
+                    "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor, "Flip": flip, "Jump": jump}
+                }));
             };
             conn.onmessage = function (evt) {
                 console.log(evt);
@@ -97,6 +100,7 @@
                         "Player": playerID,
                         "X": x,
                         "Y": y,
+                        "Color": playerColor,
                         "Flip": flip,
                         "Jump": jump
                     }

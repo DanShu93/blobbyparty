@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    private Dictionary<String, PlayerMove> playerMap;
+    private Dictionary<String, PlungerInputMobile> playerMap;
     private int numberOfFire = 0;
     private int numberOfIce = 0;
     public Boolean running = false;
@@ -86,13 +86,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMap = new Dictionary<string, PlayerMove>();
-        firePrefab = Resources.Load("Fire_Player") as GameObject;
-        icePrefab = Resources.Load("Ice_Player") as GameObject;
+        playerMap = new Dictionary<string, PlungerInputMobile>();
+        firePrefab = Resources.Load("Plunger") as GameObject;
+        icePrefab = Resources.Load("Plunger") as GameObject;
         StartCoroutine(CountdownRoutine());
     }
 
-    public void spawnPlayer(string id)
+    // FIXME spwan in propper positions
+    public void spawnPlayer(string id, string colorValue)
     {
         Transform player;
 
@@ -111,7 +112,12 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Got Player " + id);
         
-        playerMap.Add(id, player.GetComponent<PlayerMove>());
+        playerMap.Add(id, player.GetComponent<PlungerInputMobile>());
+        
+        Color color = new Color();
+        ColorUtility.TryParseHtmlString(colorValue, out color);
+
+        player.GetComponent<SpriteRenderer>().material.color = color;
     }
 
     public void deSpawnPlayer(string id)
@@ -125,13 +131,13 @@ public class GameManager : MonoBehaviour
         return new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
     }
 
-    public void movePlayer(string id, Vector2 direction)
+    //FIXME
+    public void movePlayer(string id, Vector2 direction, bool flip, bool jump)
     {
         if (running)
         {
-            PlayerMove player = playerMap[id];
-            player.ServerUpdate(direction);
-            //player.GetComponent<Rigidbody2D>().AddForce(direction * Time.deltaTime * 1000, ForceMode2D.Force);
+            PlungerInputMobile player = playerMap[id];
+            player.UpdateInput(direction, flip, jump);
         }
     }
 

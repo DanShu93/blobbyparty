@@ -19,6 +19,9 @@ public class MessageData
     public string Player;
     public double X;
     public double Y;
+    public bool Flip;
+    public bool Jump;
+    public string Color;
 }
 
 public class QueueSocket : WebSocketBehavior
@@ -60,7 +63,7 @@ public class SocketIOC : MonoBehaviour
             switch (message.Type)
             {
                 case "join":
-                    GetComponent<GameManager>().spawnPlayer(message.Data.Player);
+                    GetComponent<GameManager>().spawnPlayer(message.Data.Player, message.Data.Color);
                     break;
                 case "leave":
                     GetComponent<GameManager>().deSpawnPlayer(message.Data.Player);
@@ -70,7 +73,8 @@ public class SocketIOC : MonoBehaviour
                         Convert.ToSingle(message.Data.Y),
                         Convert.ToSingle(message.Data.X)
                     );
-                    GetComponent<GameManager>().movePlayer(message.Data.Player, direction);
+                    Debug.Log(json);
+                    GetComponent<GameManager>().movePlayer(message.Data.Player, direction, message.Data.Flip, message.Data.Jump);
 
                     break;
             }
