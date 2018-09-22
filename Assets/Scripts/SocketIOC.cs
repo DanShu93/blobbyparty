@@ -73,7 +73,6 @@ public class SocketIOC : MonoBehaviour
                         Convert.ToSingle(message.Data.Y),
                         Convert.ToSingle(message.Data.X)
                     );
-                    Debug.Log(json);
                     GetComponent<GameManager>().movePlayer(message.Data.Player, direction, message.Data.Flip, message.Data.Jump);
 
                     break;

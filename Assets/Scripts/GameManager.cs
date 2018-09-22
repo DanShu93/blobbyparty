@@ -38,8 +38,9 @@ public class GameManager : MonoBehaviour
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
     }
-	
-    void Update () {
+
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TriggerStart();
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
             timerText.text = timer.ToString();
             yield return new WaitForSeconds(1);
         }
+
         SwitchCanvas();
         setRunning(true);
         timer = 30;
@@ -111,11 +113,11 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Got Player " + id);
-        
         playerMap.Add(id, player.GetComponent<PlungerInput>());
-        
-        Color color = new Color();
-        ColorUtility.TryParseHtmlString(colorValue, out color);
+
+        Color color = new Color(((float)Convert.ToInt64(colorValue.Substring(0, 2), 16) )/ 255,
+           ( (float)Convert.ToInt64(colorValue.Substring(2, 2), 16) )/ 255,
+            ( (float) Convert.ToInt64(colorValue.Substring(4, 2), 16)) / 255);
 
         player.GetComponent<SpriteRenderer>().material.color = color;
     }
