@@ -7,6 +7,7 @@ public class PlungerInput : MonoBehaviour
     PlungerController pC;
 
     bool jumpInput;
+    bool flipInput;
 
     void Start()
     {
@@ -18,6 +19,15 @@ public class PlungerInput : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         pC.Move(h);
 
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            flipInput = true;
+        }
+        else
+        {
+            flipInput = false;
+        }
+
         if (Input.GetKey(KeyCode.Space))
         {
             jumpInput = true;
@@ -26,6 +36,6 @@ public class PlungerInput : MonoBehaviour
         {
             jumpInput = false;
         }
-        pC.SetJump(jumpInput);
+        pC.SynchInput(jumpInput, flipInput);
     }
 }
