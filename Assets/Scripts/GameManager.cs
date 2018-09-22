@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    private Dictionary<String, PlungerInput> playerMap;
+    private Dictionary<String, PlungerInputMobile> playerMap;
     private int numberOfFire = 0;
     private int numberOfIce = 0;
     public Boolean running = false;
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMap = new Dictionary<string, PlungerInput>();
+        playerMap = new Dictionary<string, PlungerInputMobile>();
         firePrefab = Resources.Load("Plunger") as GameObject;
         icePrefab = Resources.Load("Plunger") as GameObject;
         StartCoroutine(CountdownRoutine());
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Got Player " + id);
-        playerMap.Add(id, player.GetComponent<PlungerInput>());
+        playerMap.Add(id, player.GetComponent<PlungerInputMobile>());
 
         Color color = new Color(((float)Convert.ToInt64(colorValue.Substring(0, 2), 16) )/ 255,
            ( (float)Convert.ToInt64(colorValue.Substring(2, 2), 16) )/ 255,
@@ -141,8 +141,8 @@ public class GameManager : MonoBehaviour
     {
         if (running)
         {
-            //PlungerInputMobile player = playerMap[id];
-            //player.UpdateInput(direction, flip, jump);
+            PlungerInputMobile player = playerMap[id];
+            player.UpdateInput(direction, flip, jump);
         }
     }
 
