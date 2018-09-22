@@ -8,7 +8,6 @@
         var flip = false;
         var jump = false;
         var playerColor = Math.floor(Math.random() * 16777215).toString(16);
-        console.log(playerColor);
     </script>
 </head>
 <body>
@@ -52,11 +51,14 @@
             var x = 0;
             var y = 0;
 
-            conn.send(JSON.stringify({"Type": "join", "Data": {"Player": playerID, "X": x, "Y": y}}));
+            conn.send(JSON.stringify({
+                "Type": "join",
+                "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor}
+            }));
 
             conn.onclose = function (evt) {
                 console.log("connection closed");
-                conn.send(JSON.stringify({"Type": "leave", "Data": {"Player": playerID, "X": x, "Y": y}}));
+                conn.send(JSON.stringify({"Type": "leave", "Data": {"Player": playerID, "X": x, "Y": y, "Color": playerColor}}));
             };
             conn.onmessage = function (evt) {
                 console.log(evt);
