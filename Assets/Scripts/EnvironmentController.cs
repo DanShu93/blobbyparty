@@ -55,8 +55,8 @@ public class EnvironmentController : MonoBehaviour {
 		this.screenBounds = new Vector2(width, height);
 
 		// Adjust Size of Background
-		this.BackgroundTransform.localScale = new Vector3(screenBounds.x, screenBounds.y, 0);
-		this.FloorTransform.localScale = new Vector3(screenBounds.x, FloorTransform.localScale.y, 1);
+		//this.BackgroundTransform.localScale = new Vector3(screenBounds.x , screenBounds.y , 0);
+		//this.FloorTransform.localScale = new Vector3(screenBounds.x , FloorTransform.localScale.y, 1);
 		BoxCollider2D leftBorder = transform.gameObject.AddComponent<BoxCollider2D>();
 		BoxCollider2D rightBorder = transform.gameObject.AddComponent<BoxCollider2D>();
 		BoxCollider2D topBorder = transform.gameObject.AddComponent<BoxCollider2D>();
